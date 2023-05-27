@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Display a popup on click</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<style>
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+
+    .marker {
+        display: block;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 0;
+    }
+</style>
+<div id="map"></div>
+<script>
+	// TO MAKE THE MAP APPEAR YOU MUST
+	// ADD YOUR ACCESS TOKEN FROM
+	// https://account.mapbox.com
+	mapboxgl.accessToken = 'pk.eyJ1IjoibmlzaHUxMjM0IiwiYSI6ImNsaDU5enJxeDAyNXkzcXFxYzAxajFoZWcifQ.gCW0k4-_vXI4kN2rJdUzVQ';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/satellite-streets-v12',
+        center: [74.601304,16.843633],
+        zoom: 15
+    });
+
+    map.on('load', () => {
+        map.addSource('places', {
+            // This GeoJSON contains features that include an "icon"
+            // property. The value of the "icon" property corresponds
+            // to an image in the Mapbox Streets style's sprite.
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': [
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>Lipton</strong><p><a href="https://www.google.com/imgres?imgurl=https%3A%2F%2Fd4t7t8y8xqo0t.cloudfront.net%2Fresized%2F1080X%2Frestaurant%252F221416%252Fmenu%252Fmenu01556865274144.jpg&tbnid=80lTEBOLWwzp3M&vet=12ahUKEwjy4f3nrdb-AhVgKbcAHdixAdAQMygAegUIARDkAQ..i&imgrefurl=https%3A%2F%2Fwww.eazydiner.com%2Fmumbai%2Fstarbucks-coffee-fort-221416%2Fmenu&docid=m2DJt3cp2WX9mM&w=1080&h=1499&q=starbucks%20menu&ved=2ahUKEwjy4f3nrdb-AhVgKbcAHdixAdAQMygAegUIARDkAQ" target="_blank" title="Opens in a new window">Test Link</a> Demo</p>',
+                            'icon': 'restaurant'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.602315,16.844506]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>Ganesh Nashta Centre</strong><p> <a href="http://madmens5finale.eventbrite.com/" target="_blank" title="Opens in a new window">See menu</a></p>',
+                            'icon': 'restaurant'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.596471,16.848754]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>Safa Bakery</strong><p>EatBar (2761 Washington Boulevard Arlington VA) is throwing a <a href="http://tallulaeatbar.ticketleap.com/2012beachblanket/" target="_blank" title="Opens in a new window">Big Backyard Beach Bash and Wine Fest</a> on Saturday, serving up conch fritters, fish tacos and crab sliders, and Red Apron hot dogs. 12:00-3:00 p.m. $25.grill hot dogs.</p>',
+                            'icon': 'bar'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.598568,16.846760]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>DCD Cafe</strong><p>The <a href="http://ballstonarts-craftsmarket.blogspot.com/" target="_blank" title="Opens in a new window">Ballston Arts & Crafts Market</a> sets up shop next to the Ballston metro this Saturday for the first of five dates this summer. Nearly 35 artists and crafters will be on hand selling their wares. 10:00-4:00 p.m.</p>',
+                            'icon': 'art-gallery'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.598135,16.845454]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>Qulity Bakery</strong><p>Feeling dandy? Get fancy, grab your bike, and take part in this year\'s <a href="http://dandiesandquaintrelles.com/2012/04/the-seersucker-social-is-set-for-june-9th-save-the-date-and-start-planning-your-look/" target="_blank" title="Opens in a new window">Seersucker Social</a> bike ride from Dandies and Quaintrelles. After the ride enjoy a lawn party at Hillwood with jazz, cocktails, paper hat-making, and more. 11:00-7:00 p.m.</p>',
+                            'icon': 'bicycle'
+                            
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.598314,16.845668]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>Capital Pride Parade</strong><p>The annual <a href="http://www.capitalpride.org/parade" target="_blank" title="Opens in a new window">Capital Pride Parade</a> makes its way through Dupont this Saturday. 4:30 p.m. Free.</p>',
+                            'icon': 'rocket'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.602315,16.844506]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>Muhsinah</strong><p>Jazz-influenced hip hop artist <a href="http://www.muhsinah.com" target="_blank" title="Opens in a new window">Muhsinah</a> plays the <a href="http://www.blackcatdc.com">Black Cat</a> (1811 14th Street NW) tonight with <a href="http://www.exitclov.com" target="_blank" title="Opens in a new window">Exit Clov</a> and <a href="http://godsilla.bandcamp.com" target="_blank" title="Opens in a new window">Gods’illa</a>. 9:00 p.m. $12.</p>',
+                            'icon': 'music'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.602315,16.844506]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>A Little Night Music</strong><p>The Arlington Players\' production of Stephen Sondheim\'s  <a href="http://www.thearlingtonplayers.org/drupal-6.20/node/4661/show" target="_blank" title="Opens in a new window"><em>A Little Night Music</em></a> comes to the Kogod Cradle at The Mead Center for American Theater (1101 6th Street SW) this weekend and next. 8:00 p.m.</p>',
+                            'icon': 'music'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.602315,16.844506]
+                        }
+                    },
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<strong>Truckeroo</strong><p><a href="http://www.truckeroodc.com/www/" target="_blank">Truckeroo</a> brings dozens of food trucks, live music, and games to half and M Street SE (across from Navy Yard Metro Station) today from 11:00 a.m. to 11:00 p.m.</p>',
+                            'icon': 'music'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [74.602315,16.844506]
+                        }
+                    }
+                ]
+            }
+        });
+        // Add a layer showing the places.
+        map.addLayer({
+            'id': 'places',
+            'type': 'symbol',
+            'source': 'places',
+            'layout': {
+                'icon-image': ['get', 'icon'],
+                'icon-allow-overlap': true,
+                'icon-size': 1.2
+            }
+        });
+
+        // When a click event occurs on a feature in the places layer, open a popup at the
+        // location of the feature, with description HTML from its properties.
+        map.on('click', 'places', (e) => {
+            // Copy coordinates array.
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const description = e.features[0].properties.description;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+        });
+
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        map.on('mouseenter', 'places', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'places', () => {
+            map.getCanvas().style.cursor = '';
+        });
+    });
+
+    // Add markers to the map.
+    for (const marker of geojson.features) {
+        // Create a DOM element for each marker.
+        const el = document.createElement('div');
+        const width = marker.properties.iconSize[0];
+        const height = marker.properties.iconSize[1];
+        el.className = 'marker';
+        el.style.backgroundImage = `url(data:image/jpeg;base64,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)`;
+        el.style.width = `${width}px`;
+        el.style.height = `${height}px`;
+        el.style.backgroundSize = '100%';
+        
+        el.addEventListener('click', () => {
+        window.alert(marker.properties.message);
+        });
+ 
+        // Add markers to the map.
+        new mapboxgl.Marker(el)
+            .setLngLat([74.602315,16.844506])
+            .addTo(map);
+    }
+</script>
+
+</body>
+</html>
